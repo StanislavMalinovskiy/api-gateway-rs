@@ -11,4 +11,5 @@ public class MainController {
     public String index(Principal principal) {
         return principal.getName();
     }
+
 }

@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
@@ -24,7 +26,8 @@ import reactor.core.publisher.Mono;
  *
  */
 public class KeycloakReactiveTokenInstrospector implements ReactiveOpaqueTokenIntrospector {
-    
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final ReactiveOpaqueTokenIntrospector delegate;
    
     public KeycloakReactiveTokenInstrospector(ReactiveOpaqueTokenIntrospector delegate) {
@@ -39,7 +42,8 @@ public class KeycloakReactiveTokenInstrospector implements ReactiveOpaqueTokenIn
     }
     
     protected OAuth2AuthenticatedPrincipal mapPrincipal(OAuth2AuthenticatedPrincipal principal) {
-        
+
+
         return new DefaultOAuth2AuthenticatedPrincipal(
             principal.getName(),
             principal.getAttributes(),
@@ -58,7 +62,11 @@ public class KeycloakReactiveTokenInstrospector implements ReactiveOpaqueTokenIn
         Set<GrantedAuthority> allAuthorities = new HashSet<>();
         allAuthorities.addAll(principal.getAuthorities());
         allAuthorities.addAll(rolesAuthorities);
-        
+
+//        logger.info(principal.getAttributes().toString());
+//        logger.info(rolesAuthorities.toString());
+//        logger.info(principal.getAuthorities().toString());
+
         return allAuthorities;
     }
 

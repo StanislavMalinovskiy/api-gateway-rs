@@ -1,5 +1,7 @@
 package uz.uzgps.apigateway;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.route.Route;
@@ -13,9 +15,10 @@ import java.util.Collections;
 import java.util.Set;
 
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.*;
-
 @Component
 public class LoggingGlobalPreFilter implements GlobalFilter {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -23,7 +26,6 @@ public class LoggingGlobalPreFilter implements GlobalFilter {
         String originalUri = uris.isEmpty() ? exchange.getRequest().getURI().toString() : uris.iterator().next().toString();
         Route route = exchange.getAttribute(GATEWAY_ROUTE_ATTR);
         URI routeUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
-
 
         StringBuilder sb = new StringBuilder();
         sb.append("Incoming request ").append(originalUri).append(" is routed to id: ").append(route.getId())
@@ -34,7 +36,7 @@ public class LoggingGlobalPreFilter implements GlobalFilter {
                     String userName = (String) bearerTokenAuthentication.getTokenAttributes().get("name");
                     String userId = bearerTokenAuthentication.getName();
                     sb.append(" user name: ").append(userName).append(" user id: ").append(userId);
-
+                    logger.info(sb.toString());
                     return exchange;
                 }).defaultIfEmpty(exchange).flatMap(chain::filter);
     }
