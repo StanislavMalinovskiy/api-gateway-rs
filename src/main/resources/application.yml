@@ -1,0 +1,26 @@
+server:
+  port: 9090
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay
+      routes:
+        - id: product-service
+          uri: http://localhost:9091
+          predicates:
+            - Path=/product/**
+  security:
+    oauth2:
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: ${kc.server-url}/realms/${kc.realm}/protocol/openid-connect/certs
+      resourceserver:
+        opaquetoken:
+          introspection-uri: ${kc.server-url}/realms/${kc.realm}/protocol/openid-connect/token/introspect
+          client-id: api-gateway
+          client-secret: jM35k5hTECVQJee4s7s8gK7zRfoj5YS4
+kc:
+  server-url: https://auth.uzgps.uz:8443/auth
+  realm: spring-realm
