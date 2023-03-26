@@ -20,7 +20,7 @@ spring:
         opaquetoken:
           introspection-uri: ${kc.server-url}/realms/${kc.realm}/protocol/openid-connect/token/introspect
           client-id: api-gateway
-          client-secret: jM35k5hTECVQJee4s7s8gK7zRfoj5YS4
+          client-secret: 4r7LcqUunWxfKukwdVPmkobyk7wtAj4Z
 kc:
   server-url: https://auth.uzgps.uz:8443/auth
   realm: spring-realm
