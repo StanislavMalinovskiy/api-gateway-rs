@@ -9,7 +9,7 @@ spring:
         corsConfigurations:
           '[/**]':
             allowCredentials: true
-#            allowedOrigins: "http://192.168.1.104:8080"
+#            allowedOrigins: "http://192.168.0.108:8080"
             allowedHeaders: "*"
             allowedMethods: "*"
             exposedHeaders: "Authorization"
@@ -17,12 +17,12 @@ spring:
         - TokenRelay
       routes:
         - id: product-service
-          uri: http://192.168.1.104:9091
+          uri: http://192.168.0.108:9091
           predicates:
             - Path=/product/**
           metadata:
             allowCredentials: true
-#            allowedOrigins: 'http://192.168.1.104:8080'
+#            allowedOrigins: 'http://192.168.0.108:8080'
             allowedHeaders: '*'
             allowedMethods: '*'
             exposedHeaders: 'Authorization'

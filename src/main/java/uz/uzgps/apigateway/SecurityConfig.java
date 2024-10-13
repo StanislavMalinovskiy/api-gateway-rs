@@ -16,6 +16,7 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebFluxSecurity
@@ -43,14 +44,18 @@ public class SecurityConfig {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.applyPermitDefaultValues();
         corsConfig.setAllowCredentials(true);
-        corsConfig.setAllowedOrigins(Arrays.asList("http://192.168.1.104:8080"));
-        corsConfig.addAllowedHeader("*");
-        corsConfig.setExposedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION));
-        corsConfig.addAllowedMethod("*");
+        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:3000", "http://192.168.0.108:8080"));
+        corsConfig.setAllowedHeaders(List.of("*"));
+        corsConfig.setAllowedMethods(List.of("*"));
+        corsConfig.setExposedHeaders(List.of("*"));
 
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
+        // Разрешить отправку cookies с запросами (если необходимо)
+        corsConfig.setAllowCredentials(true);
+
+        // Применить конфигурацию CORS ко всем путям
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
+
         return source;
     }
 
